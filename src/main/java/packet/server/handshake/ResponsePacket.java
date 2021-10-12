@@ -1,11 +1,11 @@
 package packet.server.handshake;
 
-import io.netty.channel.unix.Buffer;
-import packet.Packet;
+import io.netty.buffer.ByteBuf;
+import packet.ServerPacket;
 
 import java.io.UnsupportedEncodingException;
 
-public class ResponsePacket implements Packet {
+public class ResponsePacket implements ServerPacket {
 
     private static final String JSON_EXAMPLE = "{\n" +
             "    \"version\": {\n" +
@@ -29,7 +29,7 @@ public class ResponsePacket implements Packet {
             "}";
 
     @Override
-    public void write(Buffer buffer) {
+    public void write(ByteBuf buffer) {
         System.out.println("ee");
         writeString(buffer, JSON_EXAMPLE);
     }
@@ -39,11 +39,7 @@ public class ResponsePacket implements Packet {
         return 0x00;
     }
 
-    public void test() {
-        System.out.println("grefd");
-    }
-
-    public static void writeString(Byte buffer, String value) {
+    public static void writeString(ByteBuf buffer, String value) {
         byte[] bytes = new byte[0];
         try {
             bytes = value.getBytes("UTF-8");
@@ -54,18 +50,18 @@ public class ResponsePacket implements Packet {
             System.out.println("String too big (was " + value.length() + " bytes encoded, max " + 32767 + ")");
         } else {
             writeVarInt(buffer, bytes.length);
-            buffer.putBytes(bytes);
+            buffer.writeBytes(bytes);
         }
     }
 
-    public static void writeVarInt(Buffer buffer, int value) {
+    public static void writeVarInt(ByteBuf buffer, int value) {
         do {
             byte temp = (byte) (value & 0b01111111);
             value >>>= 7;
             if (value != 0) {
                 temp |= 0b10000000;
             }
-            //buffer.putByte(temp);
+            buffer.writeByte(temp);
         } while (value != 0);
     }
 }
