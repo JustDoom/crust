@@ -9,6 +9,7 @@ import io.netty.handler.codec.http.HttpVersion;
 import packet.ServerPacket;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 public class ResponsePacket implements ServerPacket {
 
@@ -45,12 +46,8 @@ public class ResponsePacket implements ServerPacket {
     }
 
     public static void writeString(ByteBuf buffer, String value) {
-        byte[] bytes = new byte[0];
-        try {
-            bytes = value.getBytes("UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+        byte[] bytes;
+        bytes = value.getBytes(StandardCharsets.UTF_8);
         if (bytes.length > 32767) {
             System.out.println("String too big (was " + value.length() + " bytes encoded, max " + 32767 + ")");
         } else {

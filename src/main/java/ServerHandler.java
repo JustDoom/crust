@@ -9,7 +9,9 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpVersion;
 import packet.ServerPacket;
 import packet.server.handshake.ResponsePacket;
+import packet.server.handshake.StatusResponsePacketOut;
 
+import java.io.DataOutputStream;
 import java.nio.charset.StandardCharsets;
 
 public class ServerHandler  extends ChannelInboundHandlerAdapter { // (1)
@@ -18,12 +20,17 @@ public class ServerHandler  extends ChannelInboundHandlerAdapter { // (1)
     public void channelRead(ChannelHandlerContext ctx, Object msg) { // (2)
         System.out.println(msg);
 
+        StatusResponsePacketOut statusResponsePacketOut = new StatusResponsePacketOut("Custom 1.17.1", 756, 0, 0);
+        //statusResponsePacketOut.send(out);
+
         System.out.println("e");
         ResponsePacket responsePacket = new ResponsePacket();
         ByteBuf buffer = ctx.alloc().buffer();
         ((ServerPacket) responsePacket).write(buffer);
         ctx.channel().writeAndFlush(responsePacket);
         buffer.release();
+
+        //responsePacket.send(new DataOutputStream(connection.getOutputStream()));
     }
 
     @Override

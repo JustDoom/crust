@@ -7,10 +7,20 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import packet.server.handshake.TestController;
+
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.Properties;
 
 public class Main {
 
     private int port;
+
+    public static ServerSocket serverSocket;
 
     public Main(int port) {
         this.port = port;
@@ -25,7 +35,7 @@ public class Main {
                     .channel(NioServerSocketChannel.class) // (3)
                     .childHandler(new ChannelInitializer<SocketChannel>() { // (4)
                         @Override
-                        public void initChannel(SocketChannel ch) throws Exception {
+                        public void initChannel(SocketChannel ch) {
                             ch.pipeline().addLast(new ServerHandler());
                         }
                     })
@@ -46,11 +56,35 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception {
-        int port = 25565;
-        if (args.length > 0) {
-            port = Integer.parseInt(args[0]);
+
+        Properties properties = new Properties();
+        InetAddress listenInterface;
+        try {
+            listenInterface = InetAddress.getByName(properties.getProperty("server-ip", "0.0.0.0"));
+            serverSocket = new ServerSocket(Integer.parseInt(properties.getProperty("server-port", "25565")), 50, listenInterface);
+        } catch (IOException e) {
+            System.out.println("Failed to create server socket:");
+            e.printStackTrace();
+            return;
         }
 
-        new Main(port).run();
+        while (true) {
+            try {
+                // Accept the socket.
+                Socket socket = serverSocket.accept();
+                TestController ch = new TestController(socket);
+                ch.start();
+            } catch (IOException e) {
+                if (serverSocket.isClosed()) return;
+                System.out.println("Failed to accept connection:");
+            }
+        }
+
+        //int port = 25565;
+        //if (args.length > 0) {
+            //port = Integer.parseInt(args[0]);
+        //}
+
+        //new Main(port).run();
     }
 }
