@@ -1,15 +1,17 @@
-package packet.server.handshake;
+package net;
+
+import packet.server.handshake.StatusResponseOutPacket;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class TestController extends Thread {
+public class PacketHandler extends Thread {
 
     public final Socket connection;
     private DataOutputStream out;
 
-    public TestController(Socket connection) {
+    public PacketHandler(Socket connection) {
         this.connection = connection;
     }
 
@@ -25,7 +27,7 @@ public class TestController extends Thread {
     private void handle() throws IOException, InterruptedException {
         out = new DataOutputStream(connection.getOutputStream());
 
-        StatusResponsePacketOut statusResponsePacketOut = new StatusResponsePacketOut("Custom 1.17.1", 756, 2210, 0);
+        StatusResponseOutPacket statusResponsePacketOut = new StatusResponseOutPacket("Custom Software", 47, 2210, 1);
         statusResponsePacketOut.send(out);
     }
 }

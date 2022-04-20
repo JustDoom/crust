@@ -2,19 +2,20 @@ package packet.server.handshake;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import packet.ServerPacket;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class StatusResponsePacketOut extends PacketServer {
+public class StatusResponseOutPacket extends ServerPacket {
 
     private String versionName;
     private int protocolVersion;
     private int maxPlayers;
     private int onlinePlayers;
 
-    public StatusResponsePacketOut(String versionName, int protocolVersion, int maxPlayers, int onlinePlayers) {
+    public StatusResponseOutPacket(String versionName, int protocolVersion, int maxPlayers, int onlinePlayers) {
         super("StatusResponsePacketOut", 0x00);
 
         this.versionName = versionName;
