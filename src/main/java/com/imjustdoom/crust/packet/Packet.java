@@ -1,4 +1,4 @@
-package packet;
+package com.imjustdoom.crust.packet;
 
 public class Packet {
 

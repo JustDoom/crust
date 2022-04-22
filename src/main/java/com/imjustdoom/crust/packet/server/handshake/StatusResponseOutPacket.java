@@ -1,8 +1,8 @@
-package packet.server.handshake;
+package com.imjustdoom.crust.packet.server.handshake;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import packet.ServerPacket;
+import com.imjustdoom.crust.packet.ServerPacket;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;

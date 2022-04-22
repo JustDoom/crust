@@ -1,12 +1,14 @@
-package packet;
+package com.imjustdoom.crust.packet;
+
+import com.imjustdoom.crust.util.DataUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class ServerPacket extends Packet {
+public class PlayerPacket extends Packet {
 
-    public ServerPacket(String name, int id) {
+    public PlayerPacket(String name, int id) {
         super(name, id);
     }
 
@@ -18,27 +20,15 @@ public class ServerPacket extends Packet {
         ByteArrayOutputStream bufferArray = new ByteArrayOutputStream();
         DataOutputStream buffer = new DataOutputStream(bufferArray);
         // Include id in buffer so it's calculated in size.
-        writeVarInt(buffer, getId());
+        DataUtil.writeVarInt(buffer, getId());
         buffer.write(serialize());
 
         // Write size first.
-        writeVarInt(out, buffer.size());
+        DataUtil.writeVarInt(out, buffer.size());
 
         // Then the rest.
         out.write(bufferArray.toByteArray());
 
         System.out.println("Sending " + getName() + " with id 0x" + Integer.toHexString(getId()) + " and size " + buffer.size());
-    }
-
-    public static void writeVarInt(DataOutputStream out, int intValue) throws IOException {
-        int value = intValue;
-        do {
-            byte temp = (byte) (value & 0b01111111);
-            value >>>= 7;
-            if (value != 0) {
-                temp |= 0b10000000;
-            }
-            out.writeByte(temp);
-        } while (value != 0);
     }
 }
