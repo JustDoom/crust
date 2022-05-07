@@ -3,10 +3,13 @@ package com.imjustdoom.crust;
 import com.imjustdoom.crust.network.PacketHandler;
 import lombok.Getter;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,9 +25,37 @@ public class CrustServer {
 
     private ServerSocket serverSocket;
     private final List<PacketHandler> connections = new ArrayList<>();
+    private SharedObjectCacher sharedObjectCacher;
 
     public void start() {
         System.out.println("Starting server...");
+
+        File resourcesFolder = new File("./resources/");
+        // Make resources folder if it doesn't exist yet.
+        if (!resourcesFolder.exists()) {
+            resourcesFolder.mkdir();
+        }
+
+        String[] resourcesToCopy = new String[]{"dimensions.nbt"};
+        for (String resource : resourcesToCopy) {
+            File resourceFile = new File(resourcesFolder.getPath() + File.separator + resource);
+
+            // Check if the file exists.
+            if (resourceFile.exists()) continue;
+
+            InputStream inputStream = Main.class.getClassLoader().getResourceAsStream(resource);
+
+            System.out.println("Copying resource " + resource + "...");
+
+            try {
+                Files.copy(inputStream, resourceFile.toPath());
+            } catch (IOException e) {
+                System.out.println("Failed to copy resource " + resource + ":");
+                e.printStackTrace();
+                return;
+            }
+            System.out.println("Copied resource " + resource + "!");
+        }
 
         InetAddress address;
         try {
@@ -33,6 +64,17 @@ public class CrustServer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        try {
+            sharedObjectCacher = new SharedObjectCacher();
+        } catch (IOException e) {
+            System.out.println("Failed to cache shared objects:");
+            e.printStackTrace();
+            return;
+        }
+
+        KeepAlive keepAlive = new KeepAlive();
+        keepAlive.start();
 
         System.out.println("Server started!");
 

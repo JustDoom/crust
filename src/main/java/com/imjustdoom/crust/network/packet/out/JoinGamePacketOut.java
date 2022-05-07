@@ -1,5 +1,6 @@
 package com.imjustdoom.crust.network.packet.out;
 
+import com.imjustdoom.crust.Main;
 import com.imjustdoom.crust.network.packet.PacketOut;
 import com.imjustdoom.crust.util.DataUtil;
 
@@ -47,12 +48,12 @@ public class JoinGamePacketOut extends PacketOut {
         buffer.writeByte(gamemode);
         buffer.writeByte(previousGamemode);
         DataUtil.writeVarInt(buffer, 1);
-        DataUtil.writeString(buffer, "minecraft:the_end");
+        DataUtil.writeString(buffer, "minecraft:world");
 
-        //DataUtil.writeCompoundTag(buffer, Main.sharedObjectCacher.getDimensionCodec());
-        //DataUtil.writeCompoundTag(buffer, Main.sharedObjectCacher.getDimensionTag());
+        DataUtil.writeCompoundTag(buffer, Main.getServer().getSharedObjectCacher().getDimensionCodec());
+        DataUtil.writeCompoundTag(buffer, Main.getServer().getSharedObjectCacher().getDimensionTag());
 
-        DataUtil.writeString(buffer, "minecraft:the_end");
+        DataUtil.writeString(buffer, "minecraft:world");
         buffer.writeLong(hashedSeed);
         DataUtil.writeVarInt(buffer, maxPlayers);
         DataUtil.writeVarInt(buffer, viewDistance);

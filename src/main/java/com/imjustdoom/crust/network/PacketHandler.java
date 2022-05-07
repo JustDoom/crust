@@ -1,11 +1,10 @@
 package com.imjustdoom.crust.network;
 
 import com.imjustdoom.crust.Main;
-import com.imjustdoom.crust.network.packet.in.HandshakePacketIn;
-import com.imjustdoom.crust.network.packet.in.LoginStartPacketIn;
-import com.imjustdoom.crust.network.packet.in.PingInPacket;
+import com.imjustdoom.crust.network.packet.in.*;
 import com.imjustdoom.crust.network.packet.out.*;
 import com.imjustdoom.crust.util.DataUtil;
+import com.imjustdoom.crust.world.Chunk;
 import lombok.Getter;
 
 import javax.swing.text.Position;
@@ -49,7 +48,7 @@ public class PacketHandler extends Thread {
         Main.getServer().getConnections().remove(this);
     }
 
-    public void handlePackets() throws IOException {
+    public void handlePackets() throws IOException, InterruptedException {
         in = new DataInputStream(connection.getInputStream());
         out = new DataOutputStream(connection.getOutputStream());
 
@@ -78,6 +77,7 @@ public class PacketHandler extends Thread {
                         return;
                     }
                     case LOGIN -> {
+                        System.out.println("Login packet received");
                         LoginStartPacketIn loginStartPacketIn = new LoginStartPacketIn(in);
                         username = loginStartPacketIn.getUsername();
                         uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + username).getBytes());
@@ -106,6 +106,12 @@ public class PacketHandler extends Thread {
                         playerPositionAndLookPacketOut.send(out);
 
                         status = ConnectionStatus.PLAYING;
+                        System.out.println("[INFO] " + username + " has joined the game.");
+
+                        ChunkDataPacketOut chunkDataPacketOut = new ChunkDataPacketOut(0, 0, new byte[0]);
+                        chunkDataPacketOut.send(out);
+
+
                     }
                 }
             } else if (packetId == 0x01) {
@@ -114,11 +120,11 @@ public class PacketHandler extends Thread {
                 PongOutPacket pongPacketOut = new PongOutPacket(pingPacketIn.getPayload());
                 pongPacketOut.send(out);
             } else if (packetId == 0x0F) {
-                // TODO: keep alive
+                new KeepAlivePacketIn(in);
             } else if (packetId == 0x11) {
-                // TODO: player position
+                new PlayerPositionPacketIn(in);
             } else if (packetId == 0x13) {
-                // TODO: player rotation
+                new PlayerRotationPacketIn(in);
             } else {
                 System.out.println("[WARN] Unknown packet: " + packetId);
                 in.skipBytes(packetSize - DataUtil.getVarIntLength(packetId));
