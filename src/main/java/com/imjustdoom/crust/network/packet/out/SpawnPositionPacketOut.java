@@ -1,12 +1,12 @@
-package com.imjustdoom.crust.packet.out;
+package com.imjustdoom.crust.network.packet.out;
 
-import com.imjustdoom.crust.packet.PlayerPacket;
+import com.imjustdoom.crust.network.packet.PacketOut;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class SpawnPositionPacketOut extends PlayerPacket {
+public class SpawnPositionPacketOut extends PacketOut {
 
     private byte x;
     private byte y;
@@ -14,7 +14,7 @@ public class SpawnPositionPacketOut extends PlayerPacket {
     private float angle;
 
     public SpawnPositionPacketOut(byte x, byte y, byte z, float angle) {
-        super("SpawnPositionPacketOut", 0x4B);
+        super("SpawnPositionPacketOut", 0x48);
 
         this.x = x;
         this.y = y;
@@ -27,41 +27,25 @@ public class SpawnPositionPacketOut extends PlayerPacket {
         ByteArrayOutputStream bufferArray = new ByteArrayOutputStream();
         DataOutputStream buffer = new DataOutputStream(bufferArray);
 
-        buffer.writeLong(((long) (x & 0x3FFFFFF) << 38) | ((long) (z & 0x3FFFFFF) << 12) | (y & 0xFFF));
+        buffer.writeLong(((long) (x & 0x3FFFFFFF) << 38) | ((long) (y & 0x3FFFFFFF) << 12) | (z & 0x3FFF));
         buffer.writeFloat(angle);
 
         return bufferArray.toByteArray();
     }
 
     public byte getX() {
-        return this.x;
-    }
-
-    public void setX(byte x) {
-        this.x = x;
+        return x;
     }
 
     public byte getY() {
-        return this.y;
-    }
-
-    public void setY(byte y) {
-        this.y = y;
+        return y;
     }
 
     public byte getZ() {
-        return this.z;
-    }
-
-    public void setZ(byte z) {
-        this.z = z;
+        return z;
     }
 
     public float getAngle() {
-        return this.angle;
-    }
-
-    public void setAngle(float angle) {
-        this.angle = angle;
+        return angle;
     }
 }

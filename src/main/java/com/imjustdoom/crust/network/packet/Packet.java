@@ -1,4 +1,4 @@
-package com.imjustdoom.crust.packet;
+package com.imjustdoom.crust.network.packet;
 
 public class Packet {
 
@@ -11,10 +11,10 @@ public class Packet {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public int getId() {
-        return this.id;
+        return id;
     }
 }

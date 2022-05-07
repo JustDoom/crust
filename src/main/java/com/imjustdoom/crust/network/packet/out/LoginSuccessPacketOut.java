@@ -1,6 +1,6 @@
-package com.imjustdoom.crust.packet.out;
+package com.imjustdoom.crust.network.packet.out;
 
-import com.imjustdoom.crust.packet.PlayerPacket;
+import com.imjustdoom.crust.network.packet.PacketOut;
 import com.imjustdoom.crust.util.DataUtil;
 
 import java.io.ByteArrayOutputStream;
@@ -8,7 +8,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.UUID;
 
-public class LoginSuccessPacketOut extends PlayerPacket {
+public class LoginSuccessPacketOut extends PacketOut {
 
     private UUID uuid;
     private String username;
@@ -32,19 +32,11 @@ public class LoginSuccessPacketOut extends PlayerPacket {
         return bufferArray.toByteArray();
     }
 
-    public UUID getUUID() {
-        return this.uuid;
-    }
-
-    public void setUUID(UUID uuid) {
-        this.uuid = uuid;
+    public UUID getUuid() {
+        return uuid;
     }
 
     public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+        return username;
     }
 }

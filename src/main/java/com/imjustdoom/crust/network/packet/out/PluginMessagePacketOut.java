@@ -1,13 +1,13 @@
-package com.imjustdoom.crust.packet.out;
+package com.imjustdoom.crust.network.packet.out;
 
-import com.imjustdoom.crust.packet.PlayerPacket;
+import com.imjustdoom.crust.network.packet.PacketOut;
 import com.imjustdoom.crust.util.DataUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class PluginMessagePacketOut extends PlayerPacket {
+public class PluginMessagePacketOut extends PacketOut {
 
     private String identifier;
     private byte[] payload;
@@ -31,18 +31,10 @@ public class PluginMessagePacketOut extends PlayerPacket {
     }
 
     public String getIdentifier() {
-        return this.identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+        return identifier;
     }
 
     public byte[] getPayload() {
-        return this.payload;
-    }
-
-    public void setPayload(byte[] payload) {
-        this.payload = payload;
+        return payload;
     }
 }

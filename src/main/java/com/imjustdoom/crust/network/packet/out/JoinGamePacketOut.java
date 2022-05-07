@@ -1,14 +1,13 @@
-package com.imjustdoom.crust.packet.out;
+package com.imjustdoom.crust.network.packet.out;
 
-import com.imjustdoom.crust.Main;
-import com.imjustdoom.crust.packet.PlayerPacket;
+import com.imjustdoom.crust.network.packet.PacketOut;
 import com.imjustdoom.crust.util.DataUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class JoinGamePacketOut extends PlayerPacket {
+public class JoinGamePacketOut extends PacketOut {
 
     private int entityId;
     private boolean isHardcore;
@@ -50,8 +49,8 @@ public class JoinGamePacketOut extends PlayerPacket {
         DataUtil.writeVarInt(buffer, 1);
         DataUtil.writeString(buffer, "minecraft:the_end");
 
-        DataUtil.writeCompoundTag(buffer, Main.sharedObjectCacher.getDimensionCodec());
-        DataUtil.writeCompoundTag(buffer, Main.sharedObjectCacher.getDimensionTag());
+        //DataUtil.writeCompoundTag(buffer, Main.sharedObjectCacher.getDimensionCodec());
+        //DataUtil.writeCompoundTag(buffer, Main.sharedObjectCacher.getDimensionTag());
 
         DataUtil.writeString(buffer, "minecraft:the_end");
         buffer.writeLong(hashedSeed);

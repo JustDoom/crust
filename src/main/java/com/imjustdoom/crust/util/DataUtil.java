@@ -26,7 +26,7 @@ public class DataUtil {
 
             numRead++;
             if (numRead > 5) {
-                //throw new VarIntTooBigException();
+                throw new IOException("VarInt too big");
             }
         } while ((read & 0b10000000) != 0);
 

@@ -1,17 +1,17 @@
-package com.imjustdoom.crust.packet.out;
+package com.imjustdoom.crust.network.packet.out;
 
-import com.imjustdoom.crust.packet.PlayerPacket;
+import com.imjustdoom.crust.network.packet.PacketOut;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class PongPacketOut extends PlayerPacket {
+public class PongOutPacket extends PacketOut {
 
     private long payload;
 
-    public PongPacketOut(long payload) {
-        super("PongPacketOut", 0x01);
+    public PongOutPacket(long payload) {
+        super("PongOutPacket", 0x01);
 
         this.payload = payload;
     }
@@ -27,10 +27,6 @@ public class PongPacketOut extends PlayerPacket {
     }
 
     public long getPayload() {
-        return this.payload;
-    }
-
-    public void setPayload(long payload) {
-        this.payload = payload;
+        return payload;
     }
 }

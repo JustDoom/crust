@@ -1,12 +1,12 @@
-package com.imjustdoom.crust.packet.in;
+package com.imjustdoom.crust.network.packet.in;
 
-import com.imjustdoom.crust.packet.ServerPacket;
+import com.imjustdoom.crust.network.packet.PacketIn;
 import com.imjustdoom.crust.util.DataUtil;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public class LoginStartPacketIn extends ServerPacket {
+public class LoginStartPacketIn extends PacketIn {
 
     private final String username;
 
@@ -23,6 +23,6 @@ public class LoginStartPacketIn extends ServerPacket {
     }
 
     public String getUsername() {
-        return this.username;
+        return username;
     }
 }

@@ -1,12 +1,12 @@
-package com.imjustdoom.crust.packet.out;
+package com.imjustdoom.crust.network.packet.out;
 
-import com.imjustdoom.crust.packet.PlayerPacket;
+import com.imjustdoom.crust.network.packet.PacketOut;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class PlayerAbilitiesPacketOut extends PlayerPacket {
+public class PlayerAbilitiesPacketOut extends PacketOut {
 
     private byte flags;
     private float flyingSpeed;

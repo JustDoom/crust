@@ -1,13 +1,13 @@
-package com.imjustdoom.crust.packet.in;
+package com.imjustdoom.crust.network.packet.in;
 
-import com.imjustdoom.crust.net.ConnectionStatus;
-import com.imjustdoom.crust.packet.ServerPacket;
+import com.imjustdoom.crust.network.ConnectionStatus;
+import com.imjustdoom.crust.network.packet.PacketIn;
 import com.imjustdoom.crust.util.DataUtil;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public class HandshakePacketIn extends ServerPacket {
+public class HandshakePacketIn extends PacketIn {
 
     private final int protocolVersion;
     private final String serverAddress;
@@ -15,7 +15,7 @@ public class HandshakePacketIn extends ServerPacket {
     private final ConnectionStatus nextStatus;
 
     public HandshakePacketIn(int protocolVersion, String serverAddress, int serverPort, ConnectionStatus nextStatus) {
-        super("HandshakePacketIn", 0x00);
+        super("HandshakeInPacket", 0x00);
 
         this.protocolVersion = protocolVersion;
         this.serverAddress = serverAddress;
@@ -24,7 +24,7 @@ public class HandshakePacketIn extends ServerPacket {
     }
 
     public HandshakePacketIn(DataInputStream in) throws IOException {
-        super("HandshakePacketIn", 0x00);
+        super("HandshakeInPacket", 0x00);
 
         protocolVersion = DataUtil.readVarInt(in);
         serverAddress = DataUtil.readString(in);
